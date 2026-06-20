@@ -1,0 +1,65 @@
+name: Deploy Minibook to Cloudflare Pages
+
+on:
+  workflow_call:
+    inputs:
+      book:
+        description: Top-level book folder id.
+        required: true
+        type: string
+      cloudflare_project:
+        description: Cloudflare Pages project name.
+        required: true
+        type: string
+      node_version:
+        description: Node.js version used for the build.
+        required: false
+        type: string
+        default: '24'
+      pnpm_version:
+        description: pnpm version used for the build.
+        required: false
+        type: string
+        default: '10.19.0'
+    secrets:
+      CLOUDFLARE_ACCOUNT_ID:
+        required: true
+      CLOUDFLARE_API_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: minibook-${{ inputs.book }}-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ inputs.pnpm_version }}
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ inputs.node_version }}
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build ${{ inputs.book }}
+        run: BOOK=${{ inputs.book }} pnpm build
+      - name: Deploy ${{ inputs.book }} to Cloudflare Pages
+        if: github.event_name != 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        env:
+          WRANGLER_SEND_METRICS: false
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy .dist/${{ inputs.book }} --project-name=${{ inputs.cloudflare_project }} --branch=${{ github.ref_name }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

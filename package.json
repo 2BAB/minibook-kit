@@ -1,0 +1,40 @@
+{
+  "name": "@2bab/minibook-kit",
+  "version": "0.1.0",
+  "description": "A VitePress minibook kit with reusable theme, config, scripts, and Cloudflare Pages deployment helpers.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2BAB/minibook-kit.git"
+  },
+  "type": "module",
+  "packageManager": "pnpm@10.19.0",
+  "files": [
+    "bin",
+    "src",
+    ".github/workflows"
+  ],
+  "exports": {
+    "./config": {
+      "types": "./src/config.d.ts",
+      "import": "./src/config.js"
+    },
+    "./theme/Layout.vue": "./src/theme/Layout.vue",
+    "./theme/ImageZoom.vue": "./src/theme/components/ImageZoom.vue",
+    "./theme/styles.css": "./src/theme/styles.css",
+    "./types": "./src/types.ts",
+    "./vitepress-config": "./src/vitepress-config.js"
+  },
+  "bin": {
+    "minibook": "./bin/minibook.mjs"
+  },
+  "peerDependencies": {
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "vitepress": "1.6.4",
+    "vue": "3.5.38",
+    "wrangler": "4.100.0"
+  }
+}
