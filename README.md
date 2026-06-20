@@ -1,13 +1,13 @@
 # Minibook Kit
 
-A reusable VitePress kit for small independent books with a Docute-like theme, per-book config, Google Analytics, and Cloudflare Pages deployment helpers.
+A reusable VitePress kit for small independent books with a Docute-like theme, per-book config, Google Analytics, and GitHub Pages deployment helpers.
 
 ## Install From GitHub Release
 
 This kit is versioned with GitHub tags/releases. Book repos should depend on a fixed release tag:
 
 ```sh
-pnpm add -D github:2BAB/minibook-kit#v0.1.0
+pnpm add -D github:2BAB/minibook-kit#v0.1.1
 ```
 
 Use the same tag for the reusable workflow:
@@ -15,7 +15,9 @@ Use the same tag for the reusable workflow:
 ```yaml
 jobs:
   deploy:
-    uses: 2BAB/minibook-kit/.github/workflows/deploy-cloudflare-pages.yml@v0.1.0
+    uses: 2BAB/minibook-kit/.github/workflows/deploy-github-pages.yml@v0.1.1
+    with:
+      book: my-book
 ```
 
 For local unpublished development, use `pnpm link` instead of committing a `file:` dependency.
@@ -103,8 +105,8 @@ export default defineMinibook({
 Create a GitHub release by tagging the kit repo:
 
 ```sh
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.1
+git push origin v0.1.1
 ```
 
 Then create the GitHub Release from that tag. Book repos can consume the release with:
@@ -112,14 +114,14 @@ Then create the GitHub Release from that tag. Book repos can consume the release
 ```json
 {
   "devDependencies": {
-    "@2bab/minibook-kit": "github:2BAB/minibook-kit#v0.1.0"
+    "@2bab/minibook-kit": "github:2BAB/minibook-kit#v0.1.1"
   }
 }
 ```
 
 When upgrading the kit, bump both the dependency tag in `package.json` and the workflow tag in `.github/workflows/deploy.yml`.
 
-## Reusable Deploy Workflow
+## GitHub Pages Deploy Workflow
 
 ```yaml
 name: Deploy
@@ -132,9 +134,9 @@ on:
 
 jobs:
   deploy:
-    uses: 2BAB/minibook-kit/.github/workflows/deploy-cloudflare-pages.yml@v0.1.0
+    uses: 2BAB/minibook-kit/.github/workflows/deploy-github-pages.yml@v0.1.1
     with:
       book: my-book
-      cloudflare_project: my-book
-    secrets: inherit
 ```
+
+If a book needs Cloudflare Pages instead, this kit also includes `.github/workflows/deploy-cloudflare-pages.yml` as an optional workflow.
