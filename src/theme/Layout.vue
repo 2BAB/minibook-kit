@@ -25,6 +25,7 @@ const currentLocaleKey = computed(() => {
 })
 
 const currentLocale = computed(() => book.value.locales[currentLocaleKey.value] ?? book.value.locales.root)
+const siteTitle = computed(() => currentLocale.value.title ?? book.value.title)
 const sidebar = computed(() => currentLocale.value.sidebar)
 const navItems = computed<MinibookNavItem[]>(() => currentLocale.value.nav ?? book.value.nav ?? [])
 const pageHeaders = computed(() => contentHeaders.value)
@@ -118,7 +119,7 @@ function closeSidebar() {
           <span />
         </button>
 
-        <a class="site-title" :href="withBase(localeHome(currentLocaleKey))">{{ book.title }}</a>
+        <a class="site-title" :href="withBase(localeHome(currentLocaleKey))">{{ siteTitle }}</a>
 
         <nav v-if="navItems.length" class="top-nav" aria-label="Primary navigation">
           <a
