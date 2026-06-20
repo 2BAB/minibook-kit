@@ -7,7 +7,7 @@ A reusable VitePress kit for small independent books with a Docute-like theme, p
 This kit is versioned with GitHub tags/releases. Book repos should depend on a fixed release tag:
 
 ```sh
-pnpm add -D github:2BAB/minibook-kit#v0.1.1
+pnpm add -D github:2BAB/minibook-kit#v0.1.2
 ```
 
 Use the same tag for the reusable workflow:
@@ -15,7 +15,7 @@ Use the same tag for the reusable workflow:
 ```yaml
 jobs:
   deploy:
-    uses: 2BAB/minibook-kit/.github/workflows/deploy-github-pages.yml@v0.1.1
+    uses: 2BAB/minibook-kit/.github/workflows/deploy-github-pages.yml@v0.1.2
     with:
       book: my-book
 ```
@@ -105,8 +105,8 @@ export default defineMinibook({
 Create a GitHub release by tagging the kit repo:
 
 ```sh
-git tag v0.1.1
-git push origin v0.1.1
+git tag v0.1.2
+git push origin v0.1.2
 ```
 
 Then create the GitHub Release from that tag. Book repos can consume the release with:
@@ -114,7 +114,7 @@ Then create the GitHub Release from that tag. Book repos can consume the release
 ```json
 {
   "devDependencies": {
-    "@2bab/minibook-kit": "github:2BAB/minibook-kit#v0.1.1"
+    "@2bab/minibook-kit": "github:2BAB/minibook-kit#v0.1.2"
   }
 }
 ```
@@ -134,7 +134,7 @@ on:
 
 jobs:
   deploy:
-    uses: 2BAB/minibook-kit/.github/workflows/deploy-github-pages.yml@v0.1.1
+    uses: 2BAB/minibook-kit/.github/workflows/deploy-github-pages.yml@v0.1.2
     with:
       book: my-book
 ```
